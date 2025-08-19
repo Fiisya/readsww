@@ -4,12 +4,13 @@ import makeWASocket, {
 	delay,
 	useMultiFileAuthState,
 	fetchLatestBaileysVersion,
-	makeInMemoryStore,
 	jidNormalizedUser,
 	DisconnectReason,
 	Browsers,
 	makeCacheableSignalKeyStore,
 } from 'baileys';
+import pkg from 'baileys';
+const { makeInMemoryStore } = pkg;
 import pino from 'pino';
 import { Boom } from '@hapi/boom';
 import fs from 'fs';
@@ -24,7 +25,7 @@ const logger = pino({ timestamp: () => `,"time":"${new Date().toJSON()}"` }).chi
 logger.level = 'fatal';
 
 const usePairingCode = process.env.PAIRING_NUMBER;
-const store = makeInMemoryStore({ logger });
+const store = { bind: () => {} };
 
 if (process.env.WRITE_STORE === 'true') store.readFromFile(`./${process.env.SESSION_NAME}/store.json`);
 
